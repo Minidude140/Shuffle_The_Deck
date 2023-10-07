@@ -24,8 +24,9 @@ Option Strict On
 '[~]Check if all cards are drawn
 '[~]check if value is drawn previously before reporting to user
 '[~]Automatically Reshuffle when reaching the end of the deck
-'*[]report drawn value to user; mark as true
-'[]use array location to determine card value
+'[~]report drawn value to user; mark as true
+'[~]use array location to determine card value
+'[]CLean up console output
 
 
 Module ShuffleTheDeck
@@ -58,25 +59,27 @@ Module ShuffleTheDeck
 
     Sub DrawCard(ByRef deckOfCards(,) As Boolean)
         Dim suit As Integer
-        Dim Value As Integer
+        Dim value As Integer
         If CardCount() < 52 Then
             Do
                 'draw new card
                 suit = RandomNumber(3)
-                Value = RandomNumber(12)
-            Loop Until deckOfCards(suit, Value) = False
-            deckOfCards(suit, Value) = True
+                value = RandomNumber(12)
+            Loop Until deckOfCards(suit, value) = False
+            deckOfCards(suit, value) = True
             'write card value to user
-            Console.WriteLine($"You Drew {suit} and {Value}" & vbCrLf)
+            'Console.WriteLine($"You Drew {suit} and {value}" & vbCrLf)
+            DetermineCard(suit, value)
         ElseIf CardCount() = 53 Then
             Do
                 'draw new card
                 suit = RandomNumber(3)
-                Value = RandomNumber(12)
-            Loop Until deckOfCards(suit, Value) = False
-            deckOfCards(suit, Value) = True
+                value = RandomNumber(12)
+            Loop Until deckOfCards(suit, value) = False
+            deckOfCards(suit, value) = True
             'write card value to user
-            Console.WriteLine($"You Drew {suit} and {Value}")
+            'Console.WriteLine($"You Drew {suit} and {Value}")
+            DetermineCard(suit, value)
             Console.WriteLine("You have drawn all 52 cards! Please press R to reshuffle." & vbCrLf)
 
         Else
@@ -108,5 +111,35 @@ Module ShuffleTheDeck
         End If
         Return count
     End Function
+
+    Sub DetermineCard(suit As Integer, value As Integer)
+        Dim currentSuit As String
+        Dim currentValue As String
+        Select Case suit
+            Case = 0
+                currentSuit = "SPades"
+            Case = 1
+                currentSuit = "Clubs"
+            Case = 2
+                currentSuit = "Hearts"
+            Case = 3
+                currentSuit = "Diamonds"
+            Case Else
+                Console.WriteLine("This code should never run.")
+        End Select
+        Select Case value
+            Case = 0
+                currentValue = "Ace"
+            Case = 1, 2, 3, 4, 5, 6, 7, 8, 9
+                currentValue = CStr(value + 1)
+            Case = 10
+                currentValue = "Jack"
+            Case = 11
+                currentValue = "Queen"
+            Case = 12
+                currentValue = "King"
+        End Select
+        Console.WriteLine($"You have drawn a {currentValue} of {currentSuit}.")
+    End Sub
 
 End Module
