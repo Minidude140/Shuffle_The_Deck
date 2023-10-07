@@ -21,7 +21,7 @@ Option Strict On
 '[~]Add random number function
 '[~]DrawCard() function randomly draws card
 '[~]Add card count function
-'[]Check if all cards are drawn
+'[~]Check if all cards are drawn
 '[~]check if value is drawn previously before reporting to user
 '*[]report drawn value to user; mark as true
 '[]use array location to determine card value
@@ -45,12 +45,11 @@ Module ShuffleTheDeck
                     Exit Do
                 Case = "R", "r"
                     'Reshuffle the deck here (redim to false)
-                    Console.WriteLine("Reshuffle Deck Here" & vbCrLf)
+                    ReDim deckOfCards(3, 12)
                     CardCount(True)
                 Case Else
                     'draw card here
                     DrawCard(deckOfCards)
-                    CardCount()
             End Select
         Loop
         Console.Read()
@@ -59,14 +58,29 @@ Module ShuffleTheDeck
     Sub DrawCard(ByRef deckOfCards(,) As Boolean)
         Dim suit As Integer
         Dim Value As Integer
-        Do
-            'draw new card
-            suit = RandomNumber(3)
-            Value = RandomNumber(12)
-        Loop Until deckOfCards(suit, Value) = False
-        deckOfCards(suit, Value) = True
-        'write card value to user
-        Console.WriteLine($"You Drew {suit} and {Value}")
+        If CardCount() < 52 Then
+            Do
+                'draw new card
+                suit = RandomNumber(3)
+                Value = RandomNumber(12)
+            Loop Until deckOfCards(suit, Value) = False
+            deckOfCards(suit, Value) = True
+            'write card value to user
+            Console.WriteLine($"You Drew {suit} and {Value}" & vbCrLf)
+        ElseIf CardCount() = 53 Then
+            Do
+                'draw new card
+                suit = RandomNumber(3)
+                Value = RandomNumber(12)
+            Loop Until deckOfCards(suit, Value) = False
+            deckOfCards(suit, Value) = True
+            'write card value to user
+            Console.WriteLine($"You Drew {suit} and {Value}")
+            Console.WriteLine("You have drawn all 52 cards! Please press R to reshuffle." & vbCrLf)
+
+        Else
+            Console.WriteLine("You have drawn all 52 cards! Please press R to reshuffle.")
+        End If
 
     End Sub
 
@@ -78,11 +92,17 @@ Module ShuffleTheDeck
     'Count a card drawn or reset to 0 (writes to console)
     Function CardCount(Optional reset As Boolean = False) As Integer
         Static count As Integer
-        count += 1
+
         If reset = True Then
             count = 0
+        Else
+            If count >= 52 Then
+                count += 1
+            ElseIf count < 52 Then
+                count += 1
+                Console.WriteLine($"You have Drawn {count} card(s)")
+            End If
         End If
-        Console.WriteLine($"You have Drawn {count} card(s)" & vbCrLf)
         Return count
     End Function
 
