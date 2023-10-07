@@ -23,6 +23,7 @@ Option Strict On
 '[~]Add card count function
 '[~]Check if all cards are drawn
 '[~]check if value is drawn previously before reporting to user
+'[~]Automatically Reshuffle when reaching the end of the deck
 '*[]report drawn value to user; mark as true
 '[]use array location to determine card value
 
@@ -79,7 +80,9 @@ Module ShuffleTheDeck
             Console.WriteLine("You have drawn all 52 cards! Please press R to reshuffle." & vbCrLf)
 
         Else
-            Console.WriteLine("You have drawn all 52 cards! Please press R to reshuffle.")
+            Console.WriteLine("You have drawn all 52 cards! The deck has now been Re-Shuffled")
+            ReDim deckOfCards(3, 12)
+            CardCount(True)
         End If
 
     End Sub
