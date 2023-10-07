@@ -18,6 +18,7 @@ Option Strict On
 'TODO
 '[~]create boolean array for deck (default false)
 '[~]create main loop with exit, reshuffle, and draw card
+'[~]Add random number function
 '[]DrawCard() function randomly draws card
 '[]use array location to determine card value
 '[]report drawn value to user; mark as true
@@ -41,14 +42,28 @@ Module ShuffleTheDeck
                     exitFlag = True
                     Exit Do
                 Case = "R", "r"
-                    Console.WriteLine("Reshuffle Deck Here" & vbCrLf)
                     'Reshuffle the deck here (redim to false)
+                    Console.WriteLine("Reshuffle Deck Here" & vbCrLf)
                 Case Else
-                    Console.WriteLine("Draw Card Here" & vbCrLf)
                     'draw card here
+                    DrawCard(deckOfCards)
             End Select
         Loop
         Console.Read()
     End Sub
+
+    Sub DrawCard(deckofCards(,) As Boolean)
+        Dim suit As Integer
+        Dim Value As Integer
+        suit = RandomNumber(3)
+        Value = RandomNumber(13)
+        Console.WriteLine($"You Drew {suit} and {Value}" & vbCrLf)
+
+
+    End Sub
+
+    Function RandomNumber(maxNumber As Integer) As Integer
+        Return CInt(Rnd() * maxNumber)
+    End Function
 
 End Module
