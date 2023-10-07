@@ -26,7 +26,7 @@ Option Strict On
 '[~]Automatically Reshuffle when reaching the end of the deck
 '[~]report drawn value to user; mark as true
 '[~]use array location to determine card value
-'[]CLean up console output
+'[~]CLean up console output
 
 
 Module ShuffleTheDeck
@@ -39,9 +39,9 @@ Module ShuffleTheDeck
         Console.WriteLine("Welcome.  Pick a card my friend, any card.")
         Do Until exitFlag = True
             If CardCount() = 0 Then
-                Console.WriteLine("Press enter to draw a card")
+                Console.WriteLine("Press Enter to Draw a card or Q to leave")
             Else
-                Console.WriteLine("Press enter to draw another card")
+                Console.WriteLine("Press Enter to Draw another card, R shuffle the deck, or Q to leave")
             End If
             userInput = Console.ReadLine()
             Console.WriteLine()
@@ -55,6 +55,7 @@ Module ShuffleTheDeck
                     'Re-shuffle the deck (redim to false)
                     ReDim deckOfCards(3, 12)
                     CardCount(True,)
+                    Console.WriteLine("The deck has been shuffled")
                 Case Else
                     'Draw a Card
                     DrawCard(deckOfCards)
@@ -77,6 +78,7 @@ Module ShuffleTheDeck
             CardCount(False, True)
             'Write card value to user
             DetermineCard(suit, value)
+            Console.WriteLine($"{52 - CardCount()} Cards remaining" & vbCrLf)
         ElseIf CardCount() = 51 Then
             'Drawing the last card
             Do
@@ -88,10 +90,10 @@ Module ShuffleTheDeck
             CardCount(False, True)
             'Write card value to user and report the last card has been drawn
             DetermineCard(suit, value)
-            Console.WriteLine("That was the last card. Please press R to reshuffle." & vbCrLf)
+            Console.WriteLine("That was the last card." & vbCrLf & "Please press R to Re-shuffle." & vbCrLf)
         Else
             'All cards drawn force a re-shuffle
-            Console.WriteLine("You have drawn all 52 cards! The deck has now been Re-Shuffled")
+            Console.WriteLine("You have drawn all 52 cards!" & vbCrLf & "The deck has now been Re-Shuffled." & vbCrLf)
             ReDim deckOfCards(3, 12)
             CardCount(True,)
         End If
@@ -112,7 +114,7 @@ Module ShuffleTheDeck
         Else
             If drawCard Then
                 count += 1
-                Console.WriteLine($"You have Drawn {count} card(s)")
+                'Console.WriteLine($"You have Drawn {count} card(s)")
             End If
         End If
         Return count
