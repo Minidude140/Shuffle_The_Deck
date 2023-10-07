@@ -36,21 +36,27 @@ Module ShuffleTheDeck
         Dim userInput As String
         Dim exitFlag As Boolean = False
 
+        Console.WriteLine("Welcome.  Pick a card my friend, any card.")
         Do Until exitFlag = True
-            Console.WriteLine("Press enter to draw a card")
+            If CardCount() = 0 Then
+                Console.WriteLine("Press enter to draw a card")
+            Else
+                Console.WriteLine("Press enter to draw another card")
+            End If
             userInput = Console.ReadLine()
             Console.WriteLine()
             Select Case userInput
                 Case = "Q", "q"
+                    'Quit
                     Console.WriteLine("Thanks for playing.  Have a great day." & vbCrLf)
                     exitFlag = True
                     Exit Do
                 Case = "R", "r"
-                    'Reshuffle the deck here (redim to false)
+                    'Re-shuffle the deck (redim to false)
                     ReDim deckOfCards(3, 12)
-                    CardCount(True)
+                    CardCount(True,)
                 Case Else
-                    'draw card here
+                    'Draw a Card
                     DrawCard(deckOfCards)
             End Select
         Loop
@@ -60,32 +66,34 @@ Module ShuffleTheDeck
     Sub DrawCard(ByRef deckOfCards(,) As Boolean)
         Dim suit As Integer
         Dim value As Integer
-        If CardCount() < 52 Then
+        If CardCount() < 51 Then
+            'Drawing all but the last card
             Do
-                'draw new card
+                'Draw new card set successful draw to true
                 suit = RandomNumber(3)
                 value = RandomNumber(12)
             Loop Until deckOfCards(suit, value) = False
             deckOfCards(suit, value) = True
-            'write card value to user
-            'Console.WriteLine($"You Drew {suit} and {value}" & vbCrLf)
+            CardCount(False, True)
+            'Write card value to user
             DetermineCard(suit, value)
-        ElseIf CardCount() = 53 Then
+        ElseIf CardCount() = 51 Then
+            'Drawing the last card
             Do
-                'draw new card
+                'Draw new card set successful draw to true
                 suit = RandomNumber(3)
                 value = RandomNumber(12)
             Loop Until deckOfCards(suit, value) = False
             deckOfCards(suit, value) = True
-            'write card value to user
-            'Console.WriteLine($"You Drew {suit} and {Value}")
+            CardCount(False, True)
+            'Write card value to user and report the last card has been drawn
             DetermineCard(suit, value)
-            Console.WriteLine("You have drawn all 52 cards! Please press R to reshuffle." & vbCrLf)
-
+            Console.WriteLine("That was the last card. Please press R to reshuffle." & vbCrLf)
         Else
+            'All cards drawn force a re-shuffle
             Console.WriteLine("You have drawn all 52 cards! The deck has now been Re-Shuffled")
             ReDim deckOfCards(3, 12)
-            CardCount(True)
+            CardCount(True,)
         End If
 
     End Sub
@@ -95,16 +103,14 @@ Module ShuffleTheDeck
         Return CInt(Rnd() * maxNumber)
     End Function
 
-    'Count a card drawn or reset to 0 (writes to console)
-    Function CardCount(Optional reset As Boolean = False) As Integer
+    'Default Check the number of cards drawn(false, false), Reset(True, False), or increment count (False, True)
+    Function CardCount(Optional reset As Boolean = False, Optional drawCard As Boolean = False) As Integer
         Static count As Integer
 
         If reset = True Then
             count = 0
         Else
-            If count >= 52 Then
-                count += 1
-            ElseIf count < 52 Then
+            If drawCard Then
                 count += 1
                 Console.WriteLine($"You have Drawn {count} card(s)")
             End If
@@ -112,9 +118,10 @@ Module ShuffleTheDeck
         Return count
     End Function
 
+    'determines deckOfCards() suit and value based on array cell co-ordinates
     Sub DetermineCard(suit As Integer, value As Integer)
-        Dim currentSuit As String
-        Dim currentValue As String
+        Dim currentSuit As String = ""
+        Dim currentValue As String = ""
         Select Case suit
             Case = 0
                 currentSuit = "SPades"
@@ -124,8 +131,6 @@ Module ShuffleTheDeck
                 currentSuit = "Hearts"
             Case = 3
                 currentSuit = "Diamonds"
-            Case Else
-                Console.WriteLine("This code should never run.")
         End Select
         Select Case value
             Case = 0
