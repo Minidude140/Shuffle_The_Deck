@@ -19,16 +19,18 @@ Option Strict On
 '[~]create boolean array for deck (default false)
 '[~]create main loop with exit, reshuffle, and draw card
 '[~]Add random number function
-'[]DrawCard() function randomly draws card
+'[~]DrawCard() function randomly draws card
+'[~]Add card count function
+'[]Check if all cards are drawn
+'[~]check if value is drawn previously before reporting to user
+'*[]report drawn value to user; mark as true
 '[]use array location to determine card value
-'[]report drawn value to user; mark as true
-'[]check if value is drawn previously before reporting to user
 
 
 Module ShuffleTheDeck
 
     Sub Main()
-        Dim deckOfCards(3, 13) As Boolean
+        Dim deckOfCards(3, 12) As Boolean
         Dim userInput As String
         Dim exitFlag As Boolean = False
 
@@ -44,26 +46,44 @@ Module ShuffleTheDeck
                 Case = "R", "r"
                     'Reshuffle the deck here (redim to false)
                     Console.WriteLine("Reshuffle Deck Here" & vbCrLf)
+                    CardCount(True)
                 Case Else
                     'draw card here
                     DrawCard(deckOfCards)
+                    CardCount()
             End Select
         Loop
         Console.Read()
     End Sub
 
-    Sub DrawCard(deckofCards(,) As Boolean)
+    Sub DrawCard(ByRef deckOfCards(,) As Boolean)
         Dim suit As Integer
         Dim Value As Integer
-        suit = RandomNumber(3)
-        Value = RandomNumber(13)
-        Console.WriteLine($"You Drew {suit} and {Value}" & vbCrLf)
-
+        Do
+            'draw new card
+            suit = RandomNumber(3)
+            Value = RandomNumber(12)
+        Loop Until deckOfCards(suit, Value) = False
+        deckOfCards(suit, Value) = True
+        'write card value to user
+        Console.WriteLine($"You Drew {suit} and {Value}")
 
     End Sub
 
+    'Random number from max value
     Function RandomNumber(maxNumber As Integer) As Integer
         Return CInt(Rnd() * maxNumber)
+    End Function
+
+    'Count a card drawn or reset to 0 (writes to console)
+    Function CardCount(Optional reset As Boolean = False) As Integer
+        Static count As Integer
+        count += 1
+        If reset = True Then
+            count = 0
+        End If
+        Console.WriteLine($"You have Drawn {count} card(s)" & vbCrLf)
+        Return count
     End Function
 
 End Module
