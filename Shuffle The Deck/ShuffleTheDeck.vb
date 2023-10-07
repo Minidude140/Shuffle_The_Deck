@@ -41,7 +41,7 @@ Module ShuffleTheDeck
             If CardCount() = 0 Then
                 Console.WriteLine("Press Enter to Draw a card or Q to leave")
             Else
-                Console.WriteLine("Press Enter to Draw another card, R shuffle the deck, or Q to leave")
+                Console.WriteLine("Press Enter to Draw another card, R Re-Shuffle the deck, or Q to leave")
             End If
             userInput = Console.ReadLine()
             Console.WriteLine()
@@ -55,7 +55,7 @@ Module ShuffleTheDeck
                     'Re-shuffle the deck (redim to false)
                     ReDim deckOfCards(3, 12)
                     CardCount(True,)
-                    Console.WriteLine("The deck has been shuffled")
+                    Console.WriteLine("The deck has been Re-Shuffled")
                 Case Else
                     'Draw a Card
                     DrawCard(deckOfCards)
@@ -90,10 +90,10 @@ Module ShuffleTheDeck
             CardCount(False, True)
             'Write card value to user and report the last card has been drawn
             DetermineCard(suit, value)
-            Console.WriteLine("That was the last card." & vbCrLf & "Please press R to Re-shuffle." & vbCrLf)
+            Console.WriteLine("That was the last card." & vbCrLf & "Please press R to Re-Shuffle." & vbCrLf)
         Else
             'All cards drawn force a re-shuffle
-            Console.WriteLine("You have drawn all 52 cards!" & vbCrLf & "The deck has now been Re-Shuffled." & vbCrLf)
+            Console.WriteLine("You have Drawn all 52 cards!" & vbCrLf & "The deck has now been Re-Shuffled." & vbCrLf)
             ReDim deckOfCards(3, 12)
             CardCount(True,)
         End If
@@ -114,7 +114,6 @@ Module ShuffleTheDeck
         Else
             If drawCard Then
                 count += 1
-                'Console.WriteLine($"You have Drawn {count} card(s)")
             End If
         End If
         Return count
@@ -124,16 +123,6 @@ Module ShuffleTheDeck
     Sub DetermineCard(suit As Integer, value As Integer)
         Dim currentSuit As String = ""
         Dim currentValue As String = ""
-        Select Case suit
-            Case = 0
-                currentSuit = "SPades"
-            Case = 1
-                currentSuit = "Clubs"
-            Case = 2
-                currentSuit = "Hearts"
-            Case = 3
-                currentSuit = "Diamonds"
-        End Select
         Select Case value
             Case = 0
                 currentValue = "Ace"
@@ -146,7 +135,52 @@ Module ShuffleTheDeck
             Case = 12
                 currentValue = "King"
         End Select
-        Console.WriteLine($"You have drawn a {currentValue} of {currentSuit}.")
+        Select Case suit
+            Case = 0
+                currentSuit = "Spades"
+                Console.Write($"You have Drawn a ")
+                Console.ForegroundColor = ConsoleColor.DarkGray
+                Console.Write(currentValue)
+                Console.ResetColor()
+                Console.Write(" of ")
+                Console.ForegroundColor = ConsoleColor.DarkGray
+                Console.Write(currentSuit)
+                Console.ResetColor()
+                Console.Write("." & vbCrLf)
+            Case = 1
+                currentSuit = "Clubs"
+                Console.Write($"You have Drawn a ")
+                Console.ForegroundColor = ConsoleColor.DarkGray
+                Console.Write(currentValue)
+                Console.ResetColor()
+                Console.Write(" of ")
+                Console.ForegroundColor = ConsoleColor.DarkGray
+                Console.Write(currentSuit)
+                Console.ResetColor()
+                Console.Write("." & vbCrLf)
+            Case = 2
+                currentSuit = "Hearts"
+                Console.Write($"You have Drawn a ")
+                Console.ForegroundColor = ConsoleColor.Red
+                Console.Write(currentValue)
+                Console.ResetColor()
+                Console.Write(" of ")
+                Console.ForegroundColor = ConsoleColor.Red
+                Console.Write(currentSuit)
+                Console.ResetColor()
+                Console.Write("." & vbCrLf)
+            Case = 3
+                currentSuit = "Diamonds"
+                Console.Write($"You have Drawn a ")
+                Console.ForegroundColor = ConsoleColor.Red
+                Console.Write(currentValue)
+                Console.ResetColor()
+                Console.Write(" of ")
+                Console.ForegroundColor = ConsoleColor.Red
+                Console.Write(currentSuit)
+                Console.ResetColor()
+                Console.Write("." & vbCrLf)
+        End Select
     End Sub
 
 End Module
