@@ -64,6 +64,7 @@ Module ShuffleTheDeck
         Console.Read()
     End Sub
 
+    'Draws a card not already drawn, reshuffles when all cards dealt, and Writes card drawn to user
     Sub DrawCard(ByRef deckOfCards(,) As Boolean)
         Dim suit As Integer
         Dim value As Integer
